@@ -1,25 +1,69 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import React from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      projects: [],
+      currProject: "",
+    };
+  }
+
+  retrieveProjects() {
+    let testingprojects = [
+      "Testproject1",
+      "Testproject2",
+      "Testproject3",
+      "Testproject4"
+    ];
+    this.setState({ projects: testingprojects });
+  }
+
+  componentDidMount() {
+    this.retrieveProjects();
+  }
+
+  handleChange(event) {
+    this.setState({ currProject: event.target.value });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <ProjectList
+          projects={this.state.projects}
+          currProject={this.state.currProject}
+          onChange = {this.handleChange.bind(this)}
+        />
+      </div>
+    );
+  }
+}
+
+class ProjectList extends React.Component {
+  
+  render() {
+    return (
+      <select
+        name="project"
+        id="projectSelect"
+        value={this.props.currProject}
+        onChange={this.props.onChange}
+      >
+        <option value="" disabled hidden>
+          Select Project
+        </option>
+        {this.props.projects.map((option, index) => {
+          return (
+            <option value={index} key={index}>
+              {option}
+            </option>
+          );
+        })}
+      </select>
+    );
+  }
 }
 
 export default App;
