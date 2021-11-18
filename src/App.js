@@ -1,31 +1,107 @@
 import "./App.css";
 import React from "react";
+import Items from "./components/Items";
+import Events from "./components/Events";
+import {
+  login,
+  getProjects,
+  getItems,
+  getItem,
+  getProjectMeta,
+} from "@taghub/api";
+const API_USERNAME = process.env.REACT_APP_API_USERNAME;
+const API_PASSWORD = process.env.REACT_APP_API_PASSWORD;
+const API_CONSUMER_KEY = process.env.REACT_APP_API_CONSUMER_KEY;
+
+
+  
+//test_api()
+
+/*
+import { login, getProjects, getItems, getItem,  getProjectMeta } from "@taghub/api";
+
+async function test_api() {
+  const API_USERNAME = process.env.REACT_APP_API_USERNAME;
+  const API_PASSWORD = process.env.REACT_APP_API_PASSWORD;
+  const API_CONSUMER_KEY = process.env.REACT_APP_API_CONSUMER_KEY;
+  await login(API_USERNAME, API_PASSWORD, {
+    consumerKey: API_CONSUMER_KEY,
+    init: true,
+  });
+  const api_projects = await getProjects();
+  const allItems = await getItems(api_projects[0].uuid)
+  console.log(allItems)
+
+  //const item = await getItem(allItems[0].projects[0].uuid, allItems[0].epcString);
+  //console.log(item)
+
+  const events = await getProjectMeta(api_projects[0].uuid);
+  console.log(events);
+  const events1 = await getProjectMeta(api_projects[1].uuid);
+  console.log(events1);
+  const events2 = await getProjectMeta(api_projects[2].uuid);
+  console.log(events2);
+}
+*/
+
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       projects: [],
-      currProject: "",
+      items: [],
+      api_metadata: [],
+      selectedProject: "",
+      selectedItem: "",
+      loggedIn: false,
     };
   }
 
-  retrieveProjects() {
-    let testingprojects = [
-      "Testproject1",
-      "Testproject2",
-      "Testproject3",
-      "Testproject4"
-    ];
-    this.setState({ projects: testingprojects });
+  async retrieveProjects() {
+    if (this.state.loggedIn !== true) {
+      await login(API_USERNAME, API_PASSWORD, {
+        consumerKey: API_CONSUMER_KEY,
+        init: true,
+      });
+      this.setState({ loggedIn: true });
+    }
+    const api_projects = await getProjects();
+    console.log(api_projects);
+    
+    /*
+    let api_projects = [
+      { name: "Testproject1", uuid: "1testtest" },
+      { name: "Testproject2", uuid: "2testtest" },
+      { name: "Testproject3", uuid: "3testtest" },
+      { name: "Testproject4", uuid: "4testtest" },
+    ];*/
+    this.setState({ projects: api_projects });
+  }
+
+  async retrieveItems() {
+    if (this.state.selectedProject !== "") {
+      const api_items = await getItems(this.state.selectedProject);
+      const api_metadata = await getProjectMeta(this.state.selectedProject);
+      //console.log(raw_metadata)
+      //const api_metadata = processmetadata(raw_metadata)
+      console.log(api_metadata);
+      this.setState({ items: api_items, api_metadata: api_metadata });
+    }  
   }
 
   componentDidMount() {
+    console.log("App mounted")
     this.retrieveProjects();
   }
 
-  handleChange(event) {
-    this.setState({ currProject: event.target.value });
+  handleItemChange(activeElementId) {
+    this.setState({ selectedItem: activeElementId})
+  }
+
+  async handleProjectChange(event) {
+    await this.setState({ selectedProject: event.target.value, selectedItem: ""});
+    this.retrieveItems()
   }
 
   render() {
@@ -33,9 +109,18 @@ class App extends React.Component {
       <div className="App">
         <ProjectList
           projects={this.state.projects}
-          currProject={this.state.currProject}
-          onChange = {this.handleChange.bind(this)}
+          selectedProject={this.state.selectedProject}
+          onChange={this.handleProjectChange.bind(this)}
         />
+        <div className="Itemswrapper">
+          <Items
+            selectedProject={this.state.selectedProject}
+            currentitems={this.state.items}
+            metadata={this.state.api_metadata}
+            retrieveItems={this.retrieveItems.bind(this)}
+            changeItem={this.handleItemChange.bind(this)}
+          />
+        </div>
       </div>
     );
   }
@@ -48,7 +133,7 @@ class ProjectList extends React.Component {
       <select
         name="project"
         id="projectSelect"
-        value={this.props.currProject}
+        value={this.props.selectedProject}
         onChange={this.props.onChange}
       >
         <option value="" disabled hidden>
@@ -56,8 +141,8 @@ class ProjectList extends React.Component {
         </option>
         {this.props.projects.map((option, index) => {
           return (
-            <option value={index} key={index}>
-              {option}
+            <option value={option.uuid} key={index}>
+              {option.name}
             </option>
           );
         })}
@@ -67,3 +152,20 @@ class ProjectList extends React.Component {
 }
 
 export default App;
+
+
+function processmetadata(meta) {
+let metadata = meta.map((x)=> x)
+  for (let i in metadata) {
+    if (metadata[i].hasOwnProperty("meta")) {
+      if (!(allowed.includes(metadata[i].servicetype))){
+        metadata.splice(i, 1)
+        i--
+      }
+    }
+  }
+
+  return metadata
+}
+
+const allowed = ["String", "Text", "Integer", "Float", "Date", "Datetime", "Boolean"]
