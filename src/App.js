@@ -6,7 +6,7 @@ import {
   login,
   getProjects,
   getItems,
-  getItem,
+  getEvents,
   getProjectMeta,
 } from "@taghub/api";
 const API_USERNAME = process.env.REACT_APP_API_USERNAME;
@@ -51,11 +51,32 @@ class App extends React.Component {
     this.state = {
       projects: [],
       items: [],
+      events: [],
       api_metadata: [],
       selectedProject: "",
       selectedItem: "",
+      serviceId: "",
       loggedIn: false,
     };
+  }
+
+  projectIsSelected() {
+    if (this.state.selectedProject !== "") {
+      console.log("true");
+      return true;
+    } else {
+      console.log("false");
+      return false;
+    }
+  }
+  itemIsSelected() {
+    if (this.state.selectedItem !== "") {
+      console.log("true");
+      return true;
+    } else {
+      console.log("false");
+      return false;
+    }
   }
 
   async retrieveProjects() {
@@ -68,7 +89,7 @@ class App extends React.Component {
     }
     const api_projects = await getProjects();
     console.log(api_projects);
-    
+
     /*
     let api_projects = [
       { name: "Testproject1", uuid: "1testtest" },
@@ -87,21 +108,57 @@ class App extends React.Component {
       //const api_metadata = processmetadata(raw_metadata)
       console.log(api_metadata);
       this.setState({ items: api_items, api_metadata: api_metadata });
-    }  
+    }
+  }
+
+  async retrieveItem() {
+    if (this.state.selectedProject !== "" && this.state.selectedItem !== "") {
+      const api_events = await getEvents(this.state.selectedProject, this.state.selectedItem, this.state.serviceId);
+      console.log(api_events)
+      this.setState({ events: api_events });
+    }
   }
 
   componentDidMount() {
-    console.log("App mounted")
+    console.log("App mounted");
     this.retrieveProjects();
   }
 
-  handleItemChange(activeElementId) {
-    this.setState({ selectedItem: activeElementId})
+  async handleItemChange(activeElementId, serviceId) {
+    await this.setState({ selectedItem: activeElementId, serviceId: serviceId });
+    this.retrieveItem();
   }
 
   async handleProjectChange(event) {
-    await this.setState({ selectedProject: event.target.value, selectedItem: ""});
-    this.retrieveItems()
+    await this.setState({
+      selectedProject: event.target.value,
+      selectedItem: "",
+    });
+    this.retrieveItems();
+  }
+
+  renderItems() {
+    return (
+      <Items
+        selectedProject={this.state.selectedProject}
+        currentitems={this.state.items}
+        metadata={this.state.api_metadata}
+        retrieveItems={this.retrieveItems.bind(this)}
+        changeItem={this.handleItemChange.bind(this)}
+      />
+    );
+  }
+
+  renderEvents() {
+    return (
+      <Events
+        selectedItem={this.state.selectedItem}
+        currentevents={this.state.events}
+        metadata={this.state.api_metadata}
+        retrieveItems={this.retrieveItems.bind(this)}
+        changeItem={this.handleItemChange.bind(this)}
+      />
+    );
   }
 
   render() {
@@ -112,14 +169,10 @@ class App extends React.Component {
           selectedProject={this.state.selectedProject}
           onChange={this.handleProjectChange.bind(this)}
         />
-        <div className="Itemswrapper">
-          <Items
-            selectedProject={this.state.selectedProject}
-            currentitems={this.state.items}
-            metadata={this.state.api_metadata}
-            retrieveItems={this.retrieveItems.bind(this)}
-            changeItem={this.handleItemChange.bind(this)}
-          />
+        <div className="contentWrapper">
+          {this.projectIsSelected() && this.renderItems()}
+
+          {this.itemIsSelected() && this.renderEvents()}
         </div>
       </div>
     );

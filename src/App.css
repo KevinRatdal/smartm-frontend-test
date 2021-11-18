@@ -1,6 +1,3 @@
-.App {
-  text-align: center;
-}
 
 .App-logo {
   height: 40vmin;
@@ -35,4 +32,26 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.contentWrapper {
+  display: flex;
+  justify-content: left;
+  width: auto;
+
+}
+
+.Items {
+  margin: 1em;
+  padding:1em;
+  display: block;
+  background-color: #61dafb;
+}
+
+.Events {
+    margin: 1em;
+    padding: 1em;
+    display: block;
+    width: auto;
+    background-color: bisque;
 }

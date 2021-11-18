@@ -26,7 +26,7 @@ class Items extends React.Component {
           key={item["epcString"]}
           item={item}
           metadata={processedMetadata}
-          onClick={() => this.props.changeItem(item["epcString"])}
+          onClick={() => this.props.changeItem(item["epcString"], item[9].id)}
         />
       );
     }) 
