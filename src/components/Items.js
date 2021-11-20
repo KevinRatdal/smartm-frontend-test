@@ -37,14 +37,14 @@ class Items extends React.Component {
     if (metadata.length > 0) {
       //let processed = processmetadata(metadata)
       return (
-        <table>
-          <thead>
-            <tr>{this.renderTableHeader()}</tr>
-          </thead>
-          <tbody>
-            {this.renderTableBody()}
-          </tbody>
-        </table>
+        <div className="items-wrapper">
+          <table>
+            <thead>
+              <tr>{this.renderTableHeader()}</tr>
+            </thead>
+            <tbody>{this.renderTableBody()}</tbody>
+          </table>
+        </div>
       );
       //return JSON.stringify(this.props.metadata);
     }
@@ -52,8 +52,9 @@ class Items extends React.Component {
 
   render() {
     return (
-      <div className="Items">
-        {this.projectIsSelected() && <h1 id="itemsTitle">Items</h1>}
+      <div className="items">
+        {this.projectIsSelected() && <h1 id="items-title">Items</h1>}
+        
         {this.renderMeta()}
       </div>
     );
@@ -65,9 +66,12 @@ export default Items;
 
 function Item(props) {
   return (
-    <tr onClick={props.onClick}
-        id={props.item["epcString"]}
-        key={props.item["epcString"]}>
+    <tr
+      onClick={props.onClick}
+      id={props.item["epcString"]}
+      key={props.item["epcString"]}
+      className="item"
+    >
       {props.metadata.map((entry) => {
         return <td key={entry.id}>{props.item[entry.id]}</td>;
       })}

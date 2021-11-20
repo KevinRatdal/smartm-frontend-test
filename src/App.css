@@ -1,57 +1,168 @@
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: aliceblue;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.app {
+  height:100vh;
 }
-
-.App-header {
+.header {
   background-color: #282c34;
-  min-height: 100vh;
+  height: 1em;
   display: flex;
-  flex-direction: column;
+  padding: 1em;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.contentWrapper {
-  display: flex;
   justify-content: left;
+}
+
+#project-select {
+  font-size: large;
+  width: auto;
+}
+
+
+.content-wrapper {
+  flex: 1;
+  flex-grow: 1;
+  display: flex;
+  overflow: auto;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap:1em;
+  padding: 1em;
+  height: 100%;
   width: auto;
 
 }
-
-.Items {
-  margin: 1em;
+#items-title {
+  color: aliceblue;
+}
+.items {
+  flex-grow: 1;
+  overflow:auto;
+  border-radius: 0.5em;
+  min-height: min-content;
+  
+  flex-basis: 60%;
   padding:1em;
   display: block;
-  background-color: #61dafb;
+  position:relative;
+  align-self: start;
+  background-color: #282c34;
+
 }
 
-.Events {
-    margin: 1em;
+
+
+.table-wrapper {
+    
+    overflow: auto;
+    height: 100%;
+    margin-top: 20px;
+}
+
+
+.table-wrapper table {
+  width:100%;
+
+}
+
+.table-wrapper table thead th{
+  position:absolute;   
+  top:-20px;
+  z-index:2;
+  height:20px;
+  width:35%;
+  border:1px solid red;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+ td {
+  border-color: #282c34;
+  
+  border-style: solid;
+  border-width: 0px;
+  border-top-width: 1px;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+}
+
+tr {
+background-color: aliceblue;
+
+}
+tr:nth-of-type(even){
+background-color: rgb(210, 217, 223);
+
+}
+
+tr.selected-item {
+    background-color: aquamarine;
+}
+
+
+
+
+
+.events {
+border-radius: 0.5em;
+overflow: hidden;
+
+  flex-basis: 40%;
     padding: 1em;
     display: block;
     width: auto;
+    align-self: start;
     background-color: bisque;
+}
+
+#events-title {
+  color: #282c34;
+}
+
+.event-wrapper {
+  
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+}
+
+
+.event {
+  border-radius: 0.5em;
+  overflow: hidden;
+  border: 1px solid #002368;
+  background-color: aliceblue;
+}
+
+
+.event-header {
+
+
+background-color: #002368;
+
+  color: aliceblue;
+  padding: 0.5em;
+}
+
+.event-header b {
+  margin: 0;
+}
+
+.event-content {
+display: flex;
+flex-direction: column;
+gap: 0.2em;
+padding: 0.5em;
+}
+
+.event-content p {
+    margin: 0;
+
 }

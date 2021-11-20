@@ -113,7 +113,7 @@ class App extends React.Component {
 
   async retrieveItem() {
     if (this.state.selectedProject !== "" && this.state.selectedItem !== "") {
-      const api_events = await getEvents(this.state.selectedProject, this.state.selectedItem, this.state.serviceId);
+      const api_events = await getEvents(this.state.selectedProject, this.state.selectedItem);
       console.log(api_events)
       this.setState({ events: api_events });
     }
@@ -125,7 +125,12 @@ class App extends React.Component {
   }
 
   async handleItemChange(activeElementId, serviceId) {
+    if (this.state.selectedItem !== "") {
+      document.getElementById(this.state.selectedItem).className = "item"
+    }
+
     await this.setState({ selectedItem: activeElementId, serviceId: serviceId });
+    document.getElementById(this.state.selectedItem).className = "item selected-item";
     this.retrieveItem();
   }
 
@@ -163,13 +168,15 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
-        <ProjectList
-          projects={this.state.projects}
-          selectedProject={this.state.selectedProject}
-          onChange={this.handleProjectChange.bind(this)}
-        />
-        <div className="contentWrapper">
+      <div className="app">
+        <div className="header">
+          <ProjectList
+            projects={this.state.projects}
+            selectedProject={this.state.selectedProject}
+            onChange={this.handleProjectChange.bind(this)}
+          />
+        </div>
+        <div className="content-wrapper">
           {this.projectIsSelected() && this.renderItems()}
 
           {this.itemIsSelected() && this.renderEvents()}
@@ -185,7 +192,7 @@ class ProjectList extends React.Component {
     return (
       <select
         name="project"
-        id="projectSelect"
+        id="project-select"
         value={this.props.selectedProject}
         onChange={this.props.onChange}
       >

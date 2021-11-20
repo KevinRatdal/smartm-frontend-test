@@ -16,22 +16,24 @@ class Events extends React.Component {
     if (this.props.currentevents.length < 1) {
       return <p>No events found for the selected Item.</p>
     } else {
-      return (
-        <Event
-          key={this.props.selectedItem}
-          item={this.props.selectedItem}
-          events={this.props.currentevents}
-        />
-      );
+
+      return this.props.currentevents.map((event) => {
+        return (
+          <Event
+            key={event.id}
+            event={event}
+          />
+        );
+      });
     }
   }
 
 
   render() {
     return (
-      <div className="Events">
-        {this.projectIsSelected() && <h1 id="eventsTitle">Events</h1>}
-        {this.renderEvents()}
+      <div className="events">
+        {this.projectIsSelected() && <h1 id="events-title">Events</h1>}
+        <div className="event-wrapper">{this.renderEvents()}</div>
       </div>
     );
   }
@@ -40,12 +42,21 @@ class Events extends React.Component {
 
 
 function Event(props) {
-
- 
+ console.log(props.event)
   
-  return <div> {props.item} 
-  <p>{props.events}</p>
-  </div>
+  
+  return (
+    <div className="event">
+      <div className="event-header">
+        <b>{props.event.service.name}</b>
+      </div>
+      <div className="event-content">
+        <p>Value: {JSON.stringify(props.event.value)}</p>
+        <p>User: {props.event.user}</p>
+        <p>Timestamp: {props.event.userTimestamp}</p>
+      </div>
+    </div>
+  );
 }
 
 export default Events;
