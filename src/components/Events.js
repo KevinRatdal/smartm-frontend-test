@@ -33,7 +33,9 @@ class Events extends React.Component {
     return (
       <div className="events">
         {this.projectIsSelected() && <h1 id="events-title">Events</h1>}
-        <div className="event-wrapper">{this.renderEvents()}</div>
+        <div className="scroll-events">
+          <div className="event-wrapper">{this.renderEvents()}</div>
+        </div>
       </div>
     );
   }
