@@ -112,6 +112,7 @@ class App extends React.Component {
   }
 
   async retrieveItem() {
+    this.setState({ events: "" });
     if (this.state.selectedProject !== "" && this.state.selectedItem !== "") {
       const api_events = await getEvents(this.state.selectedProject, this.state.selectedItem);
       console.log(api_events)
@@ -127,10 +128,16 @@ class App extends React.Component {
   async handleItemChange(activeElementId, serviceId) {
     if (this.state.selectedItem !== "") {
       document.getElementById(this.state.selectedItem).className = "item"
+      if (this.state.selectedItem === activeElementId) {
+        activeElementId = "";
+      }
     }
 
     await this.setState({ selectedItem: activeElementId, serviceId: serviceId });
-    document.getElementById(this.state.selectedItem).className = "item selected-item";
+    if (this.state.selectedItem !== "") {
+      document.getElementById(this.state.selectedItem).className =
+        "item selected-item";
+    }
     this.retrieveItem();
   }
 

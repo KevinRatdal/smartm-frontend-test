@@ -73,7 +73,7 @@ function Item(props) {
       className="item"
     >
       {props.metadata.map((entry) => {
-        return <td key={entry.id}>{props.item[entry.id]}</td>;
+        return <td key={entry.id}>{String(props.item[entry.id])}</td>;
       })}
     </tr>
   );
