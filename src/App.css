@@ -18,12 +18,14 @@ body {
   padding: 1em;
   align-items: center;
   justify-content: left;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 #project-select {
   font-size: large;
   background-color: aliceblue;
   width: auto;
+  border-radius: 0.25em;
 }
 
 .content-wrapper {
@@ -46,6 +48,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: #282c34;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .items-wrapper {
@@ -111,6 +114,7 @@ tr.selected-item {
   display: flex;
   flex-direction: column;
   background-color: bisque;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 
@@ -139,12 +143,12 @@ tr.selected-item {
 .event {
   border-radius: 0.5em;
   overflow: hidden;
-  border: 1px solid #002368;
   background-color: aliceblue;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 
 .event-header {
-  background-color: #002368;
+  background-color: aquamarine;
 
   color: aliceblue;
   padding: 0.5em;
