@@ -1,10 +1,10 @@
 
-#Explorer for Taghub items
-###Test for Frontend applicants
+# Explorer for Taghub items
+### Test for Frontend applicants
 Task: [here](https://gitlab.taghub.net/documentation/devdocs/-/wikis/Test-for-Frontend-applicants)
 
 
-##Credentials
+## Credentials
 Credentials stored in omitted `.env` file in the root folder of the application.
 ``` 
 .env:
