@@ -62,12 +62,10 @@ thead {
   top: 0;
 }
 .items-wrapper table thead th {
-  
-  top: -20px;
   z-index: 2;
-  height: 20px;
-  width: 35%;
-  padding-right: 1em;
+  padding-right: 0.5em;
+  padding-left: 0.5em;
+  color:#282c34;
   background-color: #80b6fd;
 }
 
@@ -82,11 +80,6 @@ tbody {
 }
 
 td {
-  border-color: #282c34;
-
-  border-style: solid;
-  border-width: 0px;
-  border-top-width: 1px;
   padding-left: 0.5em;
   padding-right: 0.5em;
 }
@@ -130,7 +123,7 @@ tr.selected-item {
 }
 
 .event-wrapper {
-  flex-grow: 1;
+  padding:1em;
   overflow: auto;
   display: flex;
   flex-direction: row;
