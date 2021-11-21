@@ -14,7 +14,7 @@ class Events extends React.Component {
 
   renderEvents() {
     if (this.props.currentevents.length < 1) {
-      return <p>No events found for the selected Item.</p>
+      return <p>Loading events for the selected Item.</p>
     } else {
 
       return this.props.currentevents.map((event) => {
@@ -33,7 +33,9 @@ class Events extends React.Component {
     return (
       <div className="events">
         {this.projectIsSelected() && <h1 id="events-title">Events</h1>}
-        <div className="event-wrapper">{this.renderEvents()}</div>
+        <div className="scroll-events">
+          <div className="event-wrapper">{this.renderEvents()}</div>
+        </div>
       </div>
     );
   }
@@ -43,7 +45,25 @@ class Events extends React.Component {
 
 function Event(props) {
  console.log(props.event)
-  
+  function renderValue(value) {
+    if (typeof(value) == 'object') {
+      console.log(value)
+      if (value === null) {
+        return <p>Event has no value</p>;
+      } else {
+        
+        return <div>
+          {
+        Object.entries(value).map(([key, val]) => {
+          return <p key={key}>{key}: {val.toString()}</p>;
+        })}
+        </div>
+
+      }
+    } else {
+      return <p>Value: {value.toString()}</p>;
+    }
+  }
   
   return (
     <div className="event">
@@ -51,7 +71,7 @@ function Event(props) {
         <b>{props.event.service.name}</b>
       </div>
       <div className="event-content">
-        <p>Value: {JSON.stringify(props.event.value)}</p>
+        {renderValue(props.event.value)}
         <p>User: {props.event.user}</p>
         <p>Timestamp: {props.event.userTimestamp}</p>
       </div>
