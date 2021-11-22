@@ -3,31 +3,21 @@ import React from "react";
 class Events extends React.Component {
   projectIsSelected() {
     if (this.props.selectedProject !== "") {
-      console.log(this.props.metadata)
-      console.log("true");
       return true;
     } else {
-      console.log("false");
       return false;
     }
   }
 
   renderEvents() {
     if (this.props.currentevents.length < 1) {
-      return <p>Loading events for the selected Item.</p>
+      return <p>Loading events for the selected Item.</p>;
     } else {
-
       return this.props.currentevents.map((event) => {
-        return (
-          <Event
-            key={event.id}
-            event={event}
-          />
-        );
+        return <Event key={event.id} event={event} />;
       });
     }
   }
-
 
   render() {
     return (
@@ -39,32 +29,31 @@ class Events extends React.Component {
       </div>
     );
   }
-
 }
 
-
 function Event(props) {
- console.log(props.event)
   function renderValue(value) {
-    if (typeof(value) == 'object') {
-      console.log(value)
+    if (typeof value == "object") {
       if (value === null) {
         return <p>Event has no value</p>;
       } else {
-        
-        return <div>
-          {
-        Object.entries(value).map(([key, val]) => {
-          return <p key={key}>{key}: {val.toString()}</p>;
-        })}
-        </div>
-
+        return (
+          <div>
+            {Object.entries(value).map(([key, val]) => {
+              return (
+                <p key={key}>
+                  {key}: {val.toString()}
+                </p>
+              );
+            })}
+          </div>
+        );
       }
     } else {
       return <p>Value: {value.toString()}</p>;
     }
   }
-  
+
   return (
     <div className="event">
       <div className="event-header">

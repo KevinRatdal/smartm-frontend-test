@@ -13,38 +13,6 @@ const API_USERNAME = process.env.REACT_APP_API_USERNAME;
 const API_PASSWORD = process.env.REACT_APP_API_PASSWORD;
 const API_CONSUMER_KEY = process.env.REACT_APP_API_CONSUMER_KEY;
 
-
-  
-//test_api()
-
-/*
-import { login, getProjects, getItems, getItem,  getProjectMeta } from "@taghub/api";
-
-async function test_api() {
-  const API_USERNAME = process.env.REACT_APP_API_USERNAME;
-  const API_PASSWORD = process.env.REACT_APP_API_PASSWORD;
-  const API_CONSUMER_KEY = process.env.REACT_APP_API_CONSUMER_KEY;
-  await login(API_USERNAME, API_PASSWORD, {
-    consumerKey: API_CONSUMER_KEY,
-    init: true,
-  });
-  const api_projects = await getProjects();
-  const allItems = await getItems(api_projects[0].uuid)
-  console.log(allItems)
-
-  //const item = await getItem(allItems[0].projects[0].uuid, allItems[0].epcString);
-  //console.log(item)
-
-  const events = await getProjectMeta(api_projects[0].uuid);
-  console.log(events);
-  const events1 = await getProjectMeta(api_projects[1].uuid);
-  console.log(events1);
-  const events2 = await getProjectMeta(api_projects[2].uuid);
-  console.log(events2);
-}
-*/
-
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -55,26 +23,21 @@ class App extends React.Component {
       api_metadata: [],
       selectedProject: "",
       selectedItem: "",
-      serviceId: "",
       loggedIn: false,
     };
   }
 
   projectIsSelected() {
     if (this.state.selectedProject !== "") {
-      console.log("true");
       return true;
     } else {
-      console.log("false");
       return false;
     }
   }
   itemIsSelected() {
     if (this.state.selectedItem !== "") {
-      console.log("true");
       return true;
     } else {
-      console.log("false");
       return false;
     }
   }
@@ -88,15 +51,7 @@ class App extends React.Component {
       this.setState({ loggedIn: true });
     }
     const api_projects = await getProjects();
-    console.log(api_projects);
 
-    /*
-    let api_projects = [
-      { name: "Testproject1", uuid: "1testtest" },
-      { name: "Testproject2", uuid: "2testtest" },
-      { name: "Testproject3", uuid: "3testtest" },
-      { name: "Testproject4", uuid: "4testtest" },
-    ];*/
     this.setState({ projects: api_projects });
   }
 
@@ -104,9 +59,6 @@ class App extends React.Component {
     if (this.state.selectedProject !== "") {
       const api_items = await getItems(this.state.selectedProject);
       const api_metadata = await getProjectMeta(this.state.selectedProject);
-      //console.log(raw_metadata)
-      //const api_metadata = processmetadata(raw_metadata)
-      console.log(api_metadata);
       this.setState({ items: api_items, api_metadata: api_metadata });
     }
   }
@@ -114,26 +66,29 @@ class App extends React.Component {
   async retrieveItem() {
     this.setState({ events: "" });
     if (this.state.selectedProject !== "" && this.state.selectedItem !== "") {
-      const api_events = await getEvents(this.state.selectedProject, this.state.selectedItem);
-      console.log(api_events)
+      const api_events = await getEvents(
+        this.state.selectedProject,
+        this.state.selectedItem
+      );
       this.setState({ events: api_events });
     }
   }
 
   componentDidMount() {
-    console.log("App mounted");
     this.retrieveProjects();
   }
 
-  async handleItemChange(activeElementId, serviceId) {
+  async handleItemChange(activeElementId) {
     if (this.state.selectedItem !== "") {
-      document.getElementById(this.state.selectedItem).className = "item"
+      document.getElementById(this.state.selectedItem).className = "item";
       if (this.state.selectedItem === activeElementId) {
         activeElementId = "";
       }
     }
 
-    await this.setState({ selectedItem: activeElementId, serviceId: serviceId });
+    await this.setState({
+      selectedItem: activeElementId,
+    });
     if (this.state.selectedItem !== "") {
       document.getElementById(this.state.selectedItem).className =
         "item selected-item";
@@ -194,7 +149,6 @@ class App extends React.Component {
 }
 
 class ProjectList extends React.Component {
-  
   render() {
     return (
       <select
@@ -219,20 +173,3 @@ class ProjectList extends React.Component {
 }
 
 export default App;
-
-
-function processmetadata(meta) {
-let metadata = meta.map((x)=> x)
-  for (let i in metadata) {
-    if (metadata[i].hasOwnProperty("meta")) {
-      if (!(allowed.includes(metadata[i].servicetype))){
-        metadata.splice(i, 1)
-        i--
-      }
-    }
-  }
-
-  return metadata
-}
-
-const allowed = ["String", "Text", "Integer", "Float", "Date", "Datetime", "Boolean"]

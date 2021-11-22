@@ -3,10 +3,8 @@ import React from "react";
 class Items extends React.Component {
   projectIsSelected() {
     if (this.props.selectedProject !== "") {
-      console.log("true");
       return true;
     } else {
-      console.log("false");
       return false;
     }
   }
@@ -19,17 +17,17 @@ class Items extends React.Component {
   }
   renderTableBody() {
     let processedMetadata = processmetadata(this.props.metadata);
-    let items = this.props.currentitems 
-    return  items.map((item) => {
+    let items = this.props.currentitems;
+    return items.map((item) => {
       return (
         <Item
           key={item["epcString"]}
           item={item}
           metadata={processedMetadata}
-          onClick={() => this.props.changeItem(item["epcString"], item[9].id)}
+          onClick={() => this.props.changeItem(item["epcString"])}
         />
       );
-    }) 
+    });
   }
 
   renderMeta() {
@@ -54,7 +52,7 @@ class Items extends React.Component {
     return (
       <div className="items">
         {this.projectIsSelected() && <h1 id="items-title">Items</h1>}
-        
+
         {this.renderMeta()}
       </div>
     );
@@ -62,7 +60,6 @@ class Items extends React.Component {
 }
 
 export default Items;
-
 
 function Item(props) {
   return (
@@ -79,12 +76,12 @@ function Item(props) {
   );
 }
 
-
 function processmetadata(meta) {
   let metadata = meta.map((x) => x);
-  metadata = metadata.filter(entry => (allowed.includes(entry.name) || allowed.includes(entry.servicetype)))
-  
-  console.log(metadata);
+  metadata = metadata.filter(
+    (entry) =>
+      allowed.includes(entry.name) || allowed.includes(entry.servicetype)
+  );
   return metadata;
 }
 
